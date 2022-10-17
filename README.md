@@ -1,0 +1,2 @@
+# AspNetCoreWeb
+AspNetCoreWeb project private 
