@@ -179,5 +179,51 @@ namespace AspNetCoreWeb.Controllers
         {
           return _context.Joke.Any(e => e.id == id);
         }
+
+        //leetCode question : 14. Longest Common Prefix
+        public string LongestCommonPrefix()
+        {
+            char letter = ' ';
+            string textshared="";
+            string[] strs = { "car","ci" };
+            int counter = -1;
+            int subElement = 2; // e 2 perche : 1) -1 perche lenght inzia a contare da 1 , 2) -1 perche counter parte da -1 come valore inizale 
+
+            if (strs.Length == 1) return strs[0];
+
+            for (int elemento = 0; elemento < 1  ; elemento++)
+            {
+                for (int lettera = 0; lettera < strs[elemento].Length ; lettera++)
+                {
+                     letter= strs[elemento][lettera];
+                     counter = -1;
+                    for (int elemento2 = 1; elemento2 < strs.Length ; elemento2++)
+                    {
+                        Console.WriteLine("lettera : " + lettera + ",  strs[elemento].Length : " + strs[elemento].Length + ", strs[elemento].Length : " + strs[elemento2].Length);
+                        if (lettera >= strs[elemento].Length || lettera >= strs[elemento2].Length)
+                        {
+                            continue;
+                        }
+                        Console.WriteLine("counter : " + counter + ", strs[elemento][lettera]  : " + strs[elemento][lettera] + ", strs[elemento2][lettera] " + strs[elemento2][lettera] + ", textshared : " + textshared);
+
+                        if (strs[elemento][lettera] == strs[elemento2][lettera])
+                        {
+                            counter++;
+                            if (Int32.Equals(counter, (strs.Length - subElement)))
+                            {
+                                textshared += letter;
+                                //Console.WriteLine("counter : " + counter + ", subElement : " + subElement + ", strs.Length - subElement : " + (strs.Length - subElement) + ", textshared : " + textshared);
+                            }
+                            Console.WriteLine("counter : " + counter + ", subElement : " + subElement + ", strs.Length - subElement : " + (strs.Length - subElement) + ", textshared : " + textshared);
+                        }else if (strs[elemento][lettera] != strs[elemento2][lettera] || counter == -1 )
+                        {
+                            return textshared;
+                        }
+                    }
+                }
+            }
+
+            return textshared;
+        }
     }
 }
