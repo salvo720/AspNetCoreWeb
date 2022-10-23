@@ -31,8 +31,19 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Jokes" asp-action="JokesSearchForm">Search</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Jokes" asp-action="LongestCommonPrefix">leetCode</a>
+                    
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                leetCode
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li> <a class="nav-link text-dark" asp-area="" asp-controller="Jokes" asp-action="LongestCommonPrefix"> 14) Longest Common Prefix</a></li>
+                                <li> <a class="nav-link text-dark" asp-area="" asp-controller="Jokes" asp-action="Convert"> 6) Zigzag Conversion</a></li>
+                                <li> <a class="nav-link text-dark" asp-area="" asp-controller="Jokes" asp-action="Convert2"> 6) Zigzag Conversion2</a></li>
+                                <li> <a class="nav-link text-dark" asp-area="" asp-controller="Jokes" asp-action="Convert3"> 6) Zigzag Conversion3</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
