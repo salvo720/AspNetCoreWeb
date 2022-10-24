@@ -494,7 +494,7 @@ namespace AspNetCoreWeb.Controllers
             int lastofString = 3, times = 0, oldIndex = -1, increaseIndex = 0;
             bool maxSize = false;
             //merge variabili 
-            int stringIndex = 0, arrayIndex = 0, counterIteration1 = 0, counterIteration2 = 0;
+            int stringIndex = 0, arrayIndex = 0, counterIteration1 = 0, counterIteration2 = 0, counterIteration2negativeif = 0;
             bool maxIsOver = false, oneRunReset = true;
 
             int counveterDebug = 0;
@@ -513,26 +513,33 @@ namespace AspNetCoreWeb.Controllers
                     counterIteration1 = 0;
                     for (int i = 0; i <= (stringsplit.Length - 1); i++)
                     {
-                        array[arrayIndex] += stringsplit[stringIndex];
-                        Console.WriteLine("1) positive if " + ", oldIndex : " + oldIndex + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + " i : " + i + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
-                        if (i < (stringsplit.Length - 1))
+                    
+                        if (counterIteration1 < (stringsplit.Length ) && arrayIndex <= (stringsplit.Length - 1))
                         {
-                            arrayIndex++;
-                            stringIndex++;
-                        }
 
+                            array[arrayIndex] += stringsplit[stringIndex];
+                            Console.WriteLine("1) positive if " + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + " i : " + i + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
+                            if (i < (stringsplit.Length - 1))
+                            {
+                                arrayIndex++;
+                                stringIndex++;
+                            }
+                            Console.WriteLine("counterIteration1 " + counterIteration1);
+                        }
                         counterIteration1++;
 
                         if (arrayIndex > (stringsplit.Length - 1))
                         {
-                            stringsplit2 = stringsplit.Substring(((counterIteration2 - 1) -1 ), ((lastofString - (counterIteration2 - 1) - 1)));
-                            arrayIndex = ((stringsplit2.Length - 1) - 1);
+                            //Console.WriteLine("ciao");
+                            stringsplit2 = stringsplit.Substring(counterIteration1 , (lastofString - counterIteration1 ));
+                            arrayIndex = (stringsplit2.Length > 1 ) ? ((stringsplit2.Length - 1) - 1) : arrayIndex;
                             for (int j1 = 0; j1 < ((stringsplit2.Length )); j1++)
                             {
                                 arrayIndex--;
                                 arrayIndex = (arrayIndex == -1) ? 1 : arrayIndex;
                                 array[arrayIndex] += stringsplit2[j1];
                                 Console.WriteLine("1) positive else" + ", oldIndex : " + oldIndex + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + " j1 : " + j1 + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit2[j1] :" + stringsplit2[j1]);
+                                counterIteration1++;
                             }
 
                         }
@@ -543,22 +550,46 @@ namespace AspNetCoreWeb.Controllers
                 else if ((times % 2) == 1)
                 {
                     counterIteration2 = 0;
+                    counterIteration2negativeif=0;
                     for (int j = (stringsplit.Length - 1); j >= 0; j--)
                     {
                         //arrayIndex = (arrayIndex == -1) ? 1 : arrayIndex;
-                        if (arrayIndex <= 0)
+                        if (arrayIndex <= 0 && (arrayIndex<= (stringsplit.Length - 1) && (counterIteration2<= (stringsplit.Length - 1))))
                         {
-                            Console.WriteLine("ciao");
-                            stringsplit2 = stringsplit.Substring(((counterIteration2 )), ((lastofString - (counterIteration2 - 1) - 1)));
+                            //Console.WriteLine("ciao");
+                            stringsplit2 = stringsplit.Substring(((counterIteration2 )), ((lastofString - counterIteration2 )));
                             Console.WriteLine("stringsplit2 : " + stringsplit2);
                             arrayIndex = 0 + 1;
                             for (int i1 = 0; i1 < ((stringsplit2.Length)); i1++)
                             {
-                                Console.WriteLine(" stringsplit2[i1] : " + stringsplit2[i1]);
-                                //arrayIndex = (arrayIndex == -1) ? 1 : arrayIndex;
-                                array[arrayIndex] += stringsplit2[i1];
-                                //arrayIndex++;
-                                Console.WriteLine("2) negative if" + ", oldIndex : " + oldIndex + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + " i1 : " + i1 + ", array[arrayIndex] : " + array[i1] + ", stringsplit[i1] :" + stringsplit2[i1]);
+                                if (counterIteration2negativeif<= (stringsplit2.Length))
+                                {
+
+                                    if (counterIteration2negativeif > (stringsplit2.Length ))
+                                    {
+                                        arrayIndex= (stringsplit2.Length - 1);
+                                        arrayIndex--;
+                                        array[arrayIndex] += stringsplit[stringIndex];
+                                        Console.WriteLine("2) negative else" + " j : " + j + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
+                                        stringIndex++;
+                                        Console.WriteLine("2) negative else" + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex);
+                                    }
+                                    else
+                                    {
+
+                                        //TODO : de gestire il caso di iri , all'ultima i , arrayindex arriva a 3 e crusha 
+
+                                        //Console.WriteLine(" stringsplit2[i1] : " + stringsplit2[i1]);
+                                        //arrayIndex = (arrayIndex == -1) ? 1 : arrayIndex;
+                                        array[arrayIndex] += stringsplit2[i1];
+                                        Console.WriteLine("2) negative if" + " i1 : " + i1 + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[i1] :" + stringsplit2[i1]);
+                                        arrayIndex++;
+                                        Console.WriteLine("2) negative if" + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex);
+                                    }
+                                }
+
+                                counterIteration2negativeif++;
+
                             }
 
                         }
@@ -566,12 +597,11 @@ namespace AspNetCoreWeb.Controllers
                         {
                             arrayIndex--;
                             array[arrayIndex] += stringsplit[stringIndex];
-                            Console.WriteLine("2) negative else" + ", oldIndex : " + oldIndex + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + " j : " + j + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
+                            Console.WriteLine("2) negative else" + " j : " + j + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
                             stringIndex++;
+                            Console.WriteLine("2) negative else" + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex);
+
                         }
-
-
-
                         counterIteration2++;
                     }
                     stringIndex = 0;
