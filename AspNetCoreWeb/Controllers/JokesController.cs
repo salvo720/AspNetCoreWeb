@@ -370,34 +370,55 @@ namespace AspNetCoreWeb.Controllers
             s = "PAYPALISHIRING"; numRows = 3;
             int addLetterOld1 = 0 , addLetterOld2 = 1 , addLetterOld3 = 2;
             string finalstring = "", stringsplit;
-           
+            int variableStart = 0 , letterPosition=0;
+            bool firstExecution = false;
+
+
             int counveterDebug = 0;
             if (s.Length <= numRows) return s;
             string[] array = new string[numRows];
-            //Console.WriteLine("s.Lenght : " + s.Length + "s.IndexOf(stringsplit)" + s.IndexOf(stringsplit));
+            int variableInizialize = 0;
 
-            while (addLetterOld1 < s.Length)
+            for (int i = 0; i < numRows; i++)
             {
-                array[0] +=s[addLetterOld1];
-                addLetterOld1 = addLetterOld1 + (numRows + 1);
-               
+
+                while (letterPosition < s.Length)
+                {
+                    if (firstExecution == false)
+                    {
+                        letterPosition = variableStart;
+                        firstExecution = true;
+                    }
+                    array[variableStart] += s[letterPosition];
+                    letterPosition = letterPosition + ((numRows - letterPosition) + ((numRows - 2) - letterPosition));
+                    Console.WriteLine(" letterPosition : " + letterPosition + " , array[variableStart] " + array[variableStart] +" , s[letterPosition] : " + s[letterPosition]);
+
+
+                }
+                Console.WriteLine("fine ciclo ");
+                variableStart++;
+                firstExecution = false;
+
+
+                Console.WriteLine(" variableStart : " + variableStart);
             }
 
-            while (addLetterOld2 < s.Length)
-            {
-                array[1] += s[addLetterOld2];
-                addLetterOld2 = addLetterOld2 + (numRows - 1);
 
-            }
+            //while (addLetterOld2 < s.Length)
+            //{
+            //    array[variableStart] += s[addLetterOld2];
+            //    addLetterOld2 = addLetterOld2 + (numRows - 1);
 
-            while (addLetterOld3 < s.Length)
-            {
-                array[2] += s[addLetterOld3];
-                addLetterOld3 = addLetterOld3 + (numRows + 1);
+            //}
 
-            }
-           
-          
+            //while (addLetterOld3 < s.Length)
+            //{
+            //    array[variableStart] += s[addLetterOld3];
+            //    addLetterOld3 = addLetterOld3 + (numRows + 1);
+
+            //}
+
+
 
             foreach (var item in array)
             {
