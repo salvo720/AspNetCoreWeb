@@ -12,6 +12,7 @@ using System.Collections;
 using System.Diagnostics.Metrics;
 using static System.Net.Mime.MediaTypeNames;
 using Microsoft.AspNetCore.Http.Features;
+using System.Text.RegularExpressions;
 
 namespace AspNetCoreWeb.Controllers
 {
@@ -231,271 +232,16 @@ namespace AspNetCoreWeb.Controllers
             return textshared;
         }
 
+
         public string Convert(string s, int numRows)
         {
             s = "PAYPALISHIRING"; numRows = 3;
-            int addLetter = numRows, addLetterOld = 0;
-            string finalstring = "", stringsplit;
-            int lastofString = 3, lastitem, counter = 0, oldindex = -1;
-            bool maxreached = false;
-
-            if (s.Length <= numRows) return s;
-            string[] array = new string[numRows];
-            //Console.WriteLine("s.Lenght : " + s.Length + "s.IndexOf(stringsplit)" + s.IndexOf(stringsplit));
-
-            while (addLetterOld <= s.Length)
-            {
-                stringsplit = s.Substring(addLetterOld, lastofString);
-                Console.WriteLine("stringsplit.Length :" + stringsplit.Length + ", stringsplit : " + stringsplit + ", s.Substring(0, addLetter) : " + s.Substring(addLetterOld, lastofString));
-                for (int i = 0; i <= stringsplit.Length - 1; i++)
-                {
-                    if (Int32.Equals(oldindex, -1))
-                    {
-                        array[i] += stringsplit[i];
-                    }
-                    else
-                    {
-
-                        if (oldindex == (stringsplit.Length - 1))
-                        {
-                            array[oldindex] += stringsplit[i];
-                            oldindex--;
-                            i++;
-                            //maxreached = true;
-
-                        }
-
-                        else if (oldindex == 0)
-                        {
-                            oldindex++;
-                            //maxreached = true;
-                        }
-                        //else if (oldindex >= stringsplit.Length)
-                        //{
-                        //    oldindex = 0;
-                        //    maxreached = true;
-                        //} 
-                        array[oldindex] += stringsplit[i];
-                        oldindex++;
-                        Console.WriteLine("oldindex :" + oldindex);
-
-                    }
-                    Console.WriteLine("1)" + " i : " + i + ", array[i] : " + array[i] + ", stringsplit[i] :" + stringsplit[i]);
-                    Console.WriteLine("Int32.Equals(i, (stringsplit.Length - 1))" + Int32.Equals(i, (stringsplit.Length - 1)));
-                    if (Int32.Equals(i, (stringsplit.Length - 1)))
-                    {
-                        counter = 0;
-                        maxreached = true;
-                        for (int j = i; j >= 0;)
-                        {
-                            if (addLetterOld >= s.Length) break;
-                            stringsplit = s.Substring(addLetterOld, lastofString);
-                            if (maxreached == true)
-                            {
-                                i = 0;
-                                maxreached = false;
-                                addLetterOld += numRows;
-                            }
-                            if (counter <= stringsplit.Length)
-                            {
-                                j--;
-                                if (j == stringsplit.Length - 1)
-                                {
-                                    array[j] += stringsplit[i];
-                                    j--;
-                                    i++;
-                                }
-                                else if (j >= 0)
-                                {
-                                    array[j] += stringsplit[i];
-                                    i++;
-
-                                }
-                                else if (j == -1)
-                                {
-                                    j = 1;
-                                    array[j] += stringsplit[i];
-                                    j++;
-                                    oldindex = j;
-                                    Console.WriteLine("2)" + " i : " + i + ", j : " + j + ", array[j] : " + array[j] + ", stringsplit[i] :" + stringsplit[j]);
-                                    j = -1;
-
-                                }
-
-
-                                counter++;
-                            }
-
-                            Console.WriteLine("i : " + i + ", j : " + j + ", stringsplit[i] : " + stringsplit[i] + " stringsplit : " + stringsplit);
-                        }
-                        Console.WriteLine(" maxreached : " + maxreached + ", i : " + i + ", (stringsplit.Length - 1) : " + (stringsplit.Length - 1));
-                    }
-                    //Console.WriteLine(Int32.Equals(i, (stringsplit.Length)));
-
-                }
-                addLetterOld += numRows;
-
-                //Console.WriteLine("s.Length " + s.Length + ", addLetterOld : " + addLetterOld);
-                if ((s.Length - addLetterOld) < 3)//calcola quanti elementi rimangono della stringa 
-                {
-                    lastofString = s.Length - addLetterOld;
-                    //Console.WriteLine("2 s.Length " + s.Length + ", addLetterOld : " + addLetterOld + ", lastofString :" + lastofString);
-                }
-            }
-
-            foreach (var item in array)
-            {
-                finalstring += item;
-            }
-
-            return finalstring;
-        }
-
-        public string Convert2(string s, int numRows)
-        {
-            s = "PAYPALISHIRING"; numRows = 3;
-            int addLetter = numRows, addLetterOld = 0;
-            string finalstring = "", stringsplit;
-            int lastofString = 3, times = 0, oldIndex = -1, increaseIndex = 0;
-            bool maxSize = false;
-
-            int counveterDebug = 0;
-            if (s.Length <= numRows) return s;
-            string[] array = new string[numRows];
-            //Console.WriteLine("s.Lenght : " + s.Length + "s.IndexOf(stringsplit)" + s.IndexOf(stringsplit));
-
-            while (addLetterOld <= s.Length)
-            {
-                stringsplit = s.Substring(addLetterOld, lastofString);
-                if ((times % 2) == 0)
-                {
-                    oldIndex = covertPositive(stringsplit, oldIndex, array, increaseIndex, maxSize);
-                    Console.WriteLine("stringsplit.Length :" + stringsplit.Length + ", stringsplit : " + stringsplit + ", s.Substring(0, addLetter) : " + s.Substring(addLetterOld, lastofString));
-                }
-                else if ((times % 2) == 1)
-                {
-                    oldIndex = covertNegative(stringsplit, oldIndex, array, increaseIndex, maxSize);
-                }
-                addLetterOld += numRows;
-
-                //Console.WriteLine("s.Length " + s.Length + ", addLetterOld : " + addLetterOld);
-                if ((s.Length - addLetterOld) < 3)//calcola quanti elementi rimangono della stringa 
-                {
-                    lastofString = s.Length - addLetterOld;
-                    //Console.WriteLine("2 s.Length " + s.Length + ", addLetterOld : " + addLetterOld + ", lastofString :" + lastofString);
-                }
-                times++;
-            }
-            foreach (var item in array)
-            {
-                finalstring += item;
-                Console.WriteLine("counveterDebug : " + counveterDebug + ", item : " + item);
-                counveterDebug++;
-            }
-
-            return finalstring;
-        }
-
-        public int covertPositive(string stringsplit, int oldIndex, string[] array, int increaseIndex, bool maxSize)
-        {
-            int stringIndex = 0, arrayIndex = 0, counterIteration = 0;
-            bool maxIsOver = false, oneRunReset = true;
-            for (int i = 0; i <= stringsplit.Length - 1; i++)
-            {
-                arrayIndex = (oldIndex != -1) ? oldIndex : arrayIndex;
-
-                if (((stringIndex <= stringsplit.Length - 1) && (arrayIndex > stringsplit.Length - 1)) || (oldIndex != -1))
-                {
-                    if (oneRunReset && arrayIndex > stringsplit.Length - 1)
-                    {
-                        arrayIndex = ((stringsplit.Length - 1) - 1);
-                        oneRunReset = false;
-                        oldIndex = -1;
-                        Console.WriteLine("1) if reset");
-                    }
-                    array[arrayIndex] += stringsplit[stringIndex];
-                    Console.WriteLine("1) if" + ", oldIndex : " + oldIndex + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + " i : " + i + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
-                    arrayIndex--;
-                    stringIndex++;
-
-                }
-                else
-                {
-                    array[arrayIndex] += stringsplit[stringIndex];
-                    Console.WriteLine("1) else" + ", oldIndex : " + oldIndex + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + " i : " + i + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
-                    arrayIndex++;
-                    stringIndex++;
-                }
-                if (arrayIndex != -1 && arrayIndex != 2) oldIndex = arrayIndex;
-
-                counterIteration++;
-                Console.WriteLine("oldIndex : " + oldIndex, ", counterIteration :" + counterIteration);
-
-            }
-            return ((arrayIndex - 1) == (stringsplit.Length - 1)) ? -1 : arrayIndex - 1;
-
-        }
-
-
-
-
-        public int covertNegative(string stringsplit, int oldIndex, string[] array, int increaseIndex, bool maxSize)
-        {
-            int stringIndex = 0, arrayIndex = 0, counterIteration = 0;
-            bool maxIsOver = false, oneRunReset = true;
-            for (int i = 2; i >= 0; i--)
-            {
-                arrayIndex = (oldIndex != -1) ? oldIndex : arrayIndex;
-
-                if (((stringIndex <= stringsplit.Length - 1) && (arrayIndex < 0)) || ((oldIndex != -1)))
-                {
-                    if (oneRunReset)
-                    {
-                        array[arrayIndex] += stringsplit[stringIndex];
-                        oneRunReset = false;
-                    }
-                    //Console.WriteLine("2) if " + ", oldIndex : " + oldIndex +  " , i :" + i + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
-                    Console.WriteLine("2) if" + ", oldIndex : " + oldIndex + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + " i : " + i + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
-                    arrayIndex++;
-                    stringIndex++;
-                    oldIndex = arrayIndex;
-                    Console.WriteLine("oldIndex : " + oldIndex);
-                }
-                else
-                {
-                    arrayIndex--;
-                    arrayIndex = (arrayIndex == -1) ? 1 : arrayIndex;
-                    array[arrayIndex] += stringsplit[stringIndex];
-                    Console.WriteLine("2) else" + ", oldIndex : " + oldIndex + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + " i : " + i + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
-
-                    stringIndex++;
-                }
-                if (i <= 0 && arrayIndex != 0) oldIndex = arrayIndex;
-                //TODO : DA COMPELTARE
-                counterIteration++;
-                Console.WriteLine("oldIndex : " + oldIndex, ", counterIteration :" + counterIteration);
-
-
-
-            }
-            return ((arrayIndex + 1) == 0) ? -1 : arrayIndex + 1;
-
-        }
-
-
-
-        // TODO ; da gestire gli indici dopo che pal , la l si trova su 1 , gestire le condizioni degli if   
-
-        public string Convert3(string s, int numRows)
-        {
-            s = "PAYPALISHIRING"; numRows = 3;
-            int addLetter = numRows, addLetterOld = 0;
-            string finalstring = "", stringsplit , stringsplit2;
-            int lastofString = 3, times = 0, oldIndex = -1, increaseIndex = 0;
-            bool maxSize = false;
+            int addLetterOld = 0;
+            string finalstring = "", stringsplit, stringsplit2;
+            char letterFilter = ' ';
+            int lastofString = 3, times = 0, oldIndex = -1;
             //merge variabili 
             int stringIndex = 0, arrayIndex = 0, counterIteration1 = 0, counterIteration2 = 0, counterIteration2negativeif = 0;
-            bool maxIsOver = false, oneRunReset = true;
 
             int counveterDebug = 0;
             if (s.Length <= numRows) return s;
@@ -506,15 +252,13 @@ namespace AspNetCoreWeb.Controllers
             {
                 stringsplit = s.Substring(addLetterOld, lastofString);
 
-                //arrayIndex = (arrayIndex >= (stringsplit.Length - 1)) ? arrayIndex - 1 : arrayIndex;
-                //array[arrayIndex] += stringsplit[stringIndex];
                 if ((times % 2) == 0)
                 {
                     counterIteration1 = 0;
                     for (int i = 0; i <= (stringsplit.Length - 1); i++)
                     {
-                    
-                        if (counterIteration1 < (stringsplit.Length ) && arrayIndex <= (stringsplit.Length - 1))
+
+                        if (counterIteration1 < (stringsplit.Length) && arrayIndex <= (stringsplit.Length - 1))
                         {
 
                             array[arrayIndex] += stringsplit[stringIndex];
@@ -531,9 +275,9 @@ namespace AspNetCoreWeb.Controllers
                         if (arrayIndex > (stringsplit.Length - 1))
                         {
                             //Console.WriteLine("ciao");
-                            stringsplit2 = stringsplit.Substring(counterIteration1 , (lastofString - counterIteration1 ));
-                            arrayIndex = (stringsplit2.Length > 1 ) ? ((stringsplit2.Length - 1) - 1) : arrayIndex;
-                            for (int j1 = 0; j1 < ((stringsplit2.Length )); j1++)
+                            stringsplit2 = stringsplit.Substring(counterIteration1, (lastofString - counterIteration1));
+                            arrayIndex = (stringsplit2.Length > 1) ? ((stringsplit2.Length - 1) - 1) : arrayIndex;
+                            for (int j1 = 0; j1 < ((stringsplit2.Length)); j1++)
                             {
                                 arrayIndex--;
                                 arrayIndex = (arrayIndex == -1) ? 1 : arrayIndex;
@@ -541,60 +285,49 @@ namespace AspNetCoreWeb.Controllers
                                 Console.WriteLine("1) positive else" + ", oldIndex : " + oldIndex + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + " j1 : " + j1 + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit2[j1] :" + stringsplit2[j1]);
                                 counterIteration1++;
                             }
-
                         }
-
                     }
                     stringIndex = 0;
                 }
                 else if ((times % 2) == 1)
                 {
                     counterIteration2 = 0;
-                    counterIteration2negativeif=0;
+                    counterIteration2negativeif = 0;
                     for (int j = (stringsplit.Length - 1); j >= 0; j--)
                     {
                         //arrayIndex = (arrayIndex == -1) ? 1 : arrayIndex;
-                        if (arrayIndex <= 0 && (arrayIndex<= (stringsplit.Length - 1) && (counterIteration2<= (stringsplit.Length - 1))))
+                        if (arrayIndex <= 0 && (arrayIndex <= (stringsplit.Length - 1) && (counterIteration2 <= (stringsplit.Length - 1))))
                         {
                             //Console.WriteLine("ciao");
-                            stringsplit2 = stringsplit.Substring(((counterIteration2 )), ((lastofString - counterIteration2 )));
+                            stringsplit2 = stringsplit.Substring(((counterIteration2)), ((lastofString - counterIteration2)));
                             Console.WriteLine("stringsplit2 : " + stringsplit2);
                             arrayIndex = 0 + 1;
                             for (int i1 = 0; i1 < ((stringsplit2.Length)); i1++)
                             {
-                                if (counterIteration2negativeif<= (stringsplit2.Length))
+                                if (counterIteration2negativeif <= (stringsplit2.Length))
                                 {
 
-                                    if (counterIteration2negativeif > (stringsplit2.Length ))
+                                    if (arrayIndex > (stringsplit.Length - 1))
                                     {
-                                        arrayIndex= (stringsplit2.Length - 1);
-                                        arrayIndex--;
-                                        array[arrayIndex] += stringsplit[stringIndex];
-                                        Console.WriteLine("2) negative else" + " j : " + j + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
-                                        stringIndex++;
-                                        Console.WriteLine("2) negative else" + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex);
+                                        arrayIndex = ((stringsplit2.Length - 1));
+                                        Console.WriteLine("stringsplit2.Lenght :" + stringsplit2.Length);
+                                        continue;
                                     }
-                                    else
-                                    {
-
-                                        //TODO : de gestire il caso di iri , all'ultima i , arrayindex arriva a 3 e crusha 
-
-                                        //Console.WriteLine(" stringsplit2[i1] : " + stringsplit2[i1]);
-                                        //arrayIndex = (arrayIndex == -1) ? 1 : arrayIndex;
-                                        array[arrayIndex] += stringsplit2[i1];
-                                        Console.WriteLine("2) negative if" + " i1 : " + i1 + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[i1] :" + stringsplit2[i1]);
-                                        arrayIndex++;
-                                        Console.WriteLine("2) negative if" + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex);
-                                    }
+                                    array[arrayIndex] += stringsplit2[i1];
+                                    Console.WriteLine("2) negative if" + " i1 : " + i1 + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[i1] :" + stringsplit2[i1]);
+                                    arrayIndex++;
+                                    Console.WriteLine("2) negative if" + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + ", stringsplit2 : " + stringsplit2);
                                 }
-
                                 counterIteration2negativeif++;
-
                             }
-
                         }
-                        else
+                        else if (counterIteration2 <= (stringsplit.Length - 1))
                         {
+                            if (counterIteration2negativeif == 2)
+                            {
+                                letterFilter = stringsplit[stringIndex];
+                                Console.WriteLine("letterFilter : " + letterFilter);
+                            }
                             arrayIndex--;
                             array[arrayIndex] += stringsplit[stringIndex];
                             Console.WriteLine("2) negative else" + " j : " + j + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
@@ -605,7 +338,6 @@ namespace AspNetCoreWeb.Controllers
                         counterIteration2++;
                     }
                     stringIndex = 0;
-
                 }
                 //Console.WriteLine("cycle " + ", oldIndex : " + oldIndex + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + " i : " + i + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
 
@@ -619,6 +351,11 @@ namespace AspNetCoreWeb.Controllers
                 }
                 times++;
             }
+
+            //filter in item 0 
+            array[0] = array[0].Replace(letterFilter, ' ');
+            array[0] = array[0].Replace(" ", "");
+
             foreach (var item in array)
             {
                 finalstring += item;
@@ -627,7 +364,49 @@ namespace AspNetCoreWeb.Controllers
             }
 
             return finalstring;
+        }
+        public string ConvertSchema(string s, int numRows)
+        {
+            s = "PAYPALISHIRING"; numRows = 3;
+            int addLetterOld1 = 0 , addLetterOld2 = 1 , addLetterOld3 = 2;
+            string finalstring = "", stringsplit;
+           
+            int counveterDebug = 0;
+            if (s.Length <= numRows) return s;
+            string[] array = new string[numRows];
+            //Console.WriteLine("s.Lenght : " + s.Length + "s.IndexOf(stringsplit)" + s.IndexOf(stringsplit));
 
+            while (addLetterOld1 < s.Length)
+            {
+                array[0] +=s[addLetterOld1];
+                addLetterOld1 = addLetterOld1 + (numRows + 1);
+               
+            }
+
+            while (addLetterOld2 < s.Length)
+            {
+                array[1] += s[addLetterOld2];
+                addLetterOld2 = addLetterOld2 + (numRows - 1);
+
+            }
+
+            while (addLetterOld3 < s.Length)
+            {
+                array[2] += s[addLetterOld3];
+                addLetterOld3 = addLetterOld3 + (numRows + 1);
+
+            }
+           
+          
+
+            foreach (var item in array)
+            {
+                finalstring += item;
+                Console.WriteLine("counveterDebug : " + counveterDebug + ", item : " + item);
+                counveterDebug++;
+            }
+
+            return finalstring;
         }
     }
 }
