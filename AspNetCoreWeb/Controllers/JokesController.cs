@@ -237,9 +237,10 @@ namespace AspNetCoreWeb.Controllers
        // soluzione presa da leet code , riscrivere cosi resta impressa 
         public string ConvertSolution(string s, int numRows)
         {
-            s = "PAYPALISHIRING"; numRows = 4;
+            s = "PAYPALISHIRING"; numRows = 3;
             if (numRows == 1) return s;
 
+            // creo un array prendendo il valore minimo tra le righe e la lunghezza di s 
             string[] rows = new string[Math.Min(numRows, s.Length)];
             int curRow = 0;
             bool goingDown = false;
