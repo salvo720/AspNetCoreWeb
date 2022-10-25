@@ -13,6 +13,7 @@ using System.Diagnostics.Metrics;
 using static System.Net.Mime.MediaTypeNames;
 using Microsoft.AspNetCore.Http.Features;
 using System.Text.RegularExpressions;
+using System.Numerics;
 
 namespace AspNetCoreWeb.Controllers
 {
@@ -233,201 +234,29 @@ namespace AspNetCoreWeb.Controllers
         }
 
 
-        public string Convert(string s, int numRows)
+       // soluzione presa da leet code , riscrivere cosi resta impressa 
+        public string ConvertSolution(string s, int numRows)
         {
-            s = "PAYPALISHIRING"; numRows = 3;
-            int addLetterOld = 0;
-            string finalstring = "", stringsplit, stringsplit2;
-            char letterFilter = ' ';
-            int lastofString = 3, times = 0, oldIndex = -1;
-            //merge variabili 
-            int stringIndex = 0, arrayIndex = 0, counterIteration1 = 0, counterIteration2 = 0, counterIteration2negativeif = 0;
+            s = "PAYPALISHIRING"; numRows = 4;
+            if (numRows == 1) return s;
 
-            int counveterDebug = 0;
-            if (s.Length <= numRows) return s;
-            string[] array = new string[numRows];
-            //Console.WriteLine("s.Lenght : " + s.Length + "s.IndexOf(stringsplit)" + s.IndexOf(stringsplit));
+            string[] rows = new string[Math.Min(numRows, s.Length)];
+            int curRow = 0;
+            bool goingDown = false;
+            string ret = "";
 
-            while (addLetterOld <= s.Length)
+
+            foreach (char c in s)
             {
-                stringsplit = s.Substring(addLetterOld, lastofString);
-
-                if ((times % 2) == 0)
-                {
-                    counterIteration1 = 0;
-                    for (int i = 0; i <= (stringsplit.Length - 1); i++)
-                    {
-
-                        if (counterIteration1 < (stringsplit.Length) && arrayIndex <= (stringsplit.Length - 1))
-                        {
-
-                            array[arrayIndex] += stringsplit[stringIndex];
-                            Console.WriteLine("1) positive if " + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + " i : " + i + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
-                            if (i < (stringsplit.Length - 1))
-                            {
-                                arrayIndex++;
-                                stringIndex++;
-                            }
-                            Console.WriteLine("counterIteration1 " + counterIteration1);
-                        }
-                        counterIteration1++;
-
-                        if (arrayIndex > (stringsplit.Length - 1))
-                        {
-                            //Console.WriteLine("ciao");
-                            stringsplit2 = stringsplit.Substring(counterIteration1, (lastofString - counterIteration1));
-                            arrayIndex = (stringsplit2.Length > 1) ? ((stringsplit2.Length - 1) - 1) : arrayIndex;
-                            for (int j1 = 0; j1 < ((stringsplit2.Length)); j1++)
-                            {
-                                arrayIndex--;
-                                arrayIndex = (arrayIndex == -1) ? 1 : arrayIndex;
-                                array[arrayIndex] += stringsplit2[j1];
-                                Console.WriteLine("1) positive else" + ", oldIndex : " + oldIndex + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + " j1 : " + j1 + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit2[j1] :" + stringsplit2[j1]);
-                                counterIteration1++;
-                            }
-                        }
-                    }
-                    stringIndex = 0;
-                }
-                else if ((times % 2) == 1)
-                {
-                    counterIteration2 = 0;
-                    counterIteration2negativeif = 0;
-                    for (int j = (stringsplit.Length - 1); j >= 0; j--)
-                    {
-                        //arrayIndex = (arrayIndex == -1) ? 1 : arrayIndex;
-                        if (arrayIndex <= 0 && (arrayIndex <= (stringsplit.Length - 1) && (counterIteration2 <= (stringsplit.Length - 1))))
-                        {
-                            //Console.WriteLine("ciao");
-                            stringsplit2 = stringsplit.Substring(((counterIteration2)), ((lastofString - counterIteration2)));
-                            Console.WriteLine("stringsplit2 : " + stringsplit2);
-                            arrayIndex = 0 + 1;
-                            for (int i1 = 0; i1 < ((stringsplit2.Length)); i1++)
-                            {
-                                if (counterIteration2negativeif <= (stringsplit2.Length))
-                                {
-
-                                    if (arrayIndex > (stringsplit.Length - 1))
-                                    {
-                                        arrayIndex = ((stringsplit2.Length - 1));
-                                        Console.WriteLine("stringsplit2.Lenght :" + stringsplit2.Length);
-                                        continue;
-                                    }
-                                    array[arrayIndex] += stringsplit2[i1];
-                                    Console.WriteLine("2) negative if" + " i1 : " + i1 + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[i1] :" + stringsplit2[i1]);
-                                    arrayIndex++;
-                                    Console.WriteLine("2) negative if" + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + ", stringsplit2 : " + stringsplit2);
-                                }
-                                counterIteration2negativeif++;
-                            }
-                        }
-                        else if (counterIteration2 <= (stringsplit.Length - 1))
-                        {
-                            if (counterIteration2negativeif == 2)
-                            {
-                                letterFilter = stringsplit[stringIndex];
-                                Console.WriteLine("letterFilter : " + letterFilter);
-                            }
-                            arrayIndex--;
-                            array[arrayIndex] += stringsplit[stringIndex];
-                            Console.WriteLine("2) negative else" + " j : " + j + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
-                            stringIndex++;
-                            Console.WriteLine("2) negative else" + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex);
-
-                        }
-                        counterIteration2++;
-                    }
-                    stringIndex = 0;
-                }
-                //Console.WriteLine("cycle " + ", oldIndex : " + oldIndex + ", arrayIndex : " + arrayIndex + ", stringIndex : " + stringIndex + " i : " + i + ", array[arrayIndex] : " + array[arrayIndex] + ", stringsplit[stringIndex] :" + stringsplit[stringIndex]);
-
-                addLetterOld += numRows;
-
-                //Console.WriteLine("s.Length " + s.Length + ", addLetterOld : " + addLetterOld);
-                if ((s.Length - addLetterOld) < 3)//calcola quanti elementi rimangono della stringa 
-                {
-                    lastofString = s.Length - addLetterOld;
-                    //Console.WriteLine("2 s.Length " + s.Length + ", addLetterOld : " + addLetterOld + ", lastofString :" + lastofString);
-                }
-                times++;
+                rows[curRow] += c;
+                // cerco i casi in cui la direzione deve essere invertita , e lo faccio assegnando a goingDown il valore opposto 
+                if (curRow == 0 || curRow == numRows - 1) goingDown = !goingDown;
+                // il prossimo indice dipende dal valore di goingDown , se e true sara +1 se e false sara -1 
+                curRow += goingDown ? 1 : -1;
             }
 
-            //filter in item 0 
-            array[0] = array[0].Replace(letterFilter, ' ');
-            array[0] = array[0].Replace(" ", "");
-
-            foreach (var item in array)
-            {
-                finalstring += item;
-                Console.WriteLine("counveterDebug : " + counveterDebug + ", item : " + item);
-                counveterDebug++;
-            }
-
-            return finalstring;
-        }
-        public string ConvertSchema(string s, int numRows)
-        {
-            s = "PAYPALISHIRING"; numRows = 3;
-            int addLetterOld1 = 0 , addLetterOld2 = 1 , addLetterOld3 = 2;
-            string finalstring = "", stringsplit;
-            int variableStart = 0 , letterPosition=0;
-            bool firstExecution = false;
-
-
-            int counveterDebug = 0;
-            if (s.Length <= numRows) return s;
-            string[] array = new string[numRows];
-            int variableInizialize = 0;
-
-            for (int i = 0; i < numRows; i++)
-            {
-
-                while (letterPosition < s.Length)
-                {
-                    if (firstExecution == false)
-                    {
-                        letterPosition = variableStart;
-                        firstExecution = true;
-                    }
-                    array[variableStart] += s[letterPosition];
-                    letterPosition = letterPosition + ((numRows - letterPosition) + ((numRows - 2) - letterPosition));
-                    Console.WriteLine(" letterPosition : " + letterPosition + " , array[variableStart] " + array[variableStart] +" , s[letterPosition] : " + s[letterPosition]);
-
-
-                }
-                Console.WriteLine("fine ciclo ");
-                variableStart++;
-                firstExecution = false;
-
-
-                Console.WriteLine(" variableStart : " + variableStart);
-            }
-
-
-            //while (addLetterOld2 < s.Length)
-            //{
-            //    array[variableStart] += s[addLetterOld2];
-            //    addLetterOld2 = addLetterOld2 + (numRows - 1);
-
-            //}
-
-            //while (addLetterOld3 < s.Length)
-            //{
-            //    array[variableStart] += s[addLetterOld3];
-            //    addLetterOld3 = addLetterOld3 + (numRows + 1);
-
-            //}
-
-
-
-            foreach (var item in array)
-            {
-                finalstring += item;
-                Console.WriteLine("counveterDebug : " + counveterDebug + ", item : " + item);
-                counveterDebug++;
-            }
-
-            return finalstring;
+            foreach (string row in rows) ret += row;
+            return ret;
         }
     }
 }
